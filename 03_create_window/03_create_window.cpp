@@ -1,20 +1,17 @@
 ﻿/* -------------------------------------------------------------------
-                    MyWindows.c --Creat a new window and use sizebox 
-                    to design the window outlook                          
+                   design a window and change the area of close the window
 --------------------------------------------------------------------*/
 
 #include <windows.h>
+#include <windowsx.h>
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
 {
-    // the name of my window
     static TCHAR szAppName[] = TEXT("MyWindows");
     HWND hwnd;
     MSG msg;
-
-    // window struct 
     WNDCLASS wndclass;
 
     wndclass.style = CS_HREDRAW | CS_VREDRAW;
@@ -24,26 +21,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
     wndclass.hInstance = hInstance;
     wndclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
     wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    // the color of my window
-    wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wndclass.lpszMenuName = NULL;
-    // the name of my window
     wndclass.lpszClassName = szAppName;
 
     if (!RegisterClass(&wndclass))
     {
-        MessageBox(NULL, TEXT("this project should run in Windows NT！"), szAppName, MB_ICONERROR);
+        MessageBox(NULL, TEXT("this project should run in  Windows NT ！"), szAppName, MB_ICONERROR);
         return 0;
     }
-    // The function of Creat windows
+
     hwnd = CreateWindow(szAppName,
-        TEXT("Hello, world!"),
-       // change the third argument in the function
-        WS_POPUP,
-        200,
-        200,
-        400,
-        120,
+        TEXT("find close button"),
+        WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
@@ -64,21 +54,47 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 
     return msg.wParam;
 }
-// the function of callback.
+
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     HDC hdc;
     PAINTSTRUCT ps;
     RECT rect;
+    static RECT bingo;
+    static int count;
+    int xPos, yPos;
 
     switch (message)
     {
     case WM_PAINT:
         hdc = BeginPaint(hwnd, &ps);
         GetClientRect(hwnd, &rect);
-        DrawText(hdc, TEXT("hello, this is my frist window！"), -1, &rect,
+        DrawText(hdc, TEXT("the real close botton is not on the top of right......"), -1, &rect,
             DT_SINGLELINE | DT_CENTER | DT_VCENTER);
         EndPaint(hwnd, &ps);
+
+        // set up the area of working
+        bingo.bottom = 200;
+        bingo.left = 100;
+        bingo.right = 200;
+        bingo.top = 100;
+
+        return 0;
+
+    case WM_RBUTTONUP:
+        xPos = GET_X_LPARAM(lParam);
+        yPos = GET_Y_LPARAM(lParam);
+        if (xPos > bingo.left && xPos<bingo.right && yPos>bingo.top && yPos < bingo.bottom)
+        {
+            if (MessageBox(hwnd, TEXT("you find it！"), TEXT("nice job"), MB_OK) == IDOK)
+            {
+                DestroyWindow(hwnd);
+            }
+        }
+        return 0;
+
+    case WM_CLOSE:
+        MessageBox(hwnd, TEXT("try to find it, it is in the middle of the window, good luck！"), TEXT("warning"), MB_OK);
         return 0;
 
     case WM_DESTROY:
@@ -87,5 +103,4 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
 
     return DefWindowProc(hwnd, message, wParam, lParam);
-    
 }
