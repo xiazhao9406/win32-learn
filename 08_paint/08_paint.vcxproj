@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a00fa9f9-5bd7-428e-bf5a-646735d37a94}</ProjectGuid>
-    <RootNamespace>My01unicode</RootNamespace>
+    <ProjectGuid>{2c7ea3b4-a26b-4fb8-b821-d2381640d1e0}</ProjectGuid>
+    <RootNamespace>My08paint</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>08_painting</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,10 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="01_unicode.h" />
+    <ClInclude Include="08_paint.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="01_unicode.cpp" />
+    <ClCompile Include="08_paint.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="08_paint.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="08_paint.ico" />
+    <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
